@@ -1,9 +1,4 @@
 #include "shell.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdlib.h>
 
 /**
  * main - creates a shell program
@@ -14,9 +9,10 @@
 int main(int ac __attribute__((unused)), char **av)
 {
 	int tty = 1, check;
-	char **args, *buffer;
+	char **args, *buffer, *path_arg;
 	size_t n = 0;
 	pid_t child_id;
+	builtin func;
 
 	while (tty)
 	{
@@ -32,23 +28,45 @@ int main(int ac __attribute__((unused)), char **av)
 		}
 		args = get_args(buffer);
 		if (!args)
+			continue;
+		func.f = built_in(args[0]);
+		if (func.f != NULL && args[1] == NULL)
 		{
 			free(buffer);
+			func.f();
+			continue;
+		}
+		path_arg = path(args[0]);
+		if (path_arg == NULL)
+		{
+			_free(args, buffer, path_arg);
 			continue;
 		}
 		child_id = fork();
 		if (child_id)
 		{
 			wait(NULL);
-			_free(args, buffer);
+			_free(args, buffer, path_arg);
 		}
 		else
 		{
-			execve(args[0], args, environ);
-			perror(av[0]);
-			_free(args, buffer);
-			break;
+			execve(path_arg, args, environ);
+			excve_error(av[0], args, buffer, path_arg);
 		}
 	}
 	return (0);
+}
+
+/**
+ * excve_error - handles execution errors
+ * @name: program name
+ * @args: pointer of arguments
+ * @buffer: data read by getline
+ * @path_arg: path file command
+ */
+int excve_error(char *name, char **args, char *buffer, char *path_arg)
+{
+	perror(name);
+	_free(args, buffer, path_arg);
+	return (1);
 }
