@@ -15,7 +15,7 @@ char *path(char *args)
 	size_t a = 0;
 
 	if (stat(args, &buffer) == 0)
-		return (args);
+		return (strdup(args));
 	cwd = getcwd(cwd, a);
 	path = strdup(getenv("PATH"));
 	dir = strtok(path, ":\n");
