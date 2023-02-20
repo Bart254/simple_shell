@@ -7,9 +7,9 @@
 #include <stdlib.h>
 void prompt(void);
 char **get_args(char *buffer);
-void _free(char **args, char *buffer, char *path_arg);
+void _free(char **args, char *path_arg);
 char *path(char *arg);
-int excve_error(char *name, char **args, char *buffer, char *);
+int excve_error(char *name, char **args, char *);
 extern char **environ;
 
 /**
@@ -25,5 +25,5 @@ typedef struct shell_bin
 int env_function(void);
 int exit_function(void);
 int (*built_in(char *command))(void);
-
+char *_getline(void);
 #endif
