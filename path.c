@@ -18,13 +18,13 @@ char *path(char *args)
 		return (strdup(args));
 	cwd = getcwd(cwd, a);
 	path = strdup(getenv("PATH"));
-	dir = strtok(path, ":\n");
+	dir = _strtok(path, ":\n");
 	while (dir != NULL)
 	{
 		chdir(dir);
 		if (stat(args, &buffer) == 0)
 			fdir = dir;
-		dir = strtok(NULL, ":\n");
+		dir = _strtok(NULL, ":\n");
 	}
 	chdir(cwd);
 	free(cwd);

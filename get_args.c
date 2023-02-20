@@ -1,6 +1,4 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "shell.h"
 
 /**
  * get_args- gets the command passed to stdin
@@ -14,14 +12,14 @@ char **get_args(char *buffer)
 	char *token, *args[50], **commands;
 	int e, size;
 
-	token = strtok(buffer, " \n");
+	token = _strtok(buffer, " \n");
 	if (!token)
 		return (NULL);
 	for (e = 0, size = 0; e < 50 && token; e++)
 	{
 		args[e] = token;
 		size++;
-		token = strtok(NULL, " \n");
+		token = _strtok(NULL, " \n");
 	}
 	commands = malloc((size + 1) * sizeof(char *));
 	if (commands == NULL)
