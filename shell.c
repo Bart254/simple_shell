@@ -24,25 +24,27 @@ int main(int ac __attribute__((unused)), char **av)
 		args = get_args(buffer);
 		if (!args)
 			continue;
-		func.f = built_in(args[0]);
-		if (func.f != NULL && args[1] == NULL)
+		func.f = built_in(args);
+		if (func.f != NULL/* && args[1] == NULL*/)
 		{
-			free(args);
-			func.f();
+			/*free(args);*/
+			func.f(args);
 			continue;
 		}
 		path_arg = path(args[0]);
 		if (path_arg == NULL)
 		{
-			execve(args[0], args, environ);
-			excve_error(av[0], args, path_arg);
+			_free(args, path_arg);
 			continue;
 		}
 		child_id = fork();
 		if (child_id)
 			wait(NULL);
 		else
+		{
 			execve(path_arg, args, environ);
+			excve_error(av[0], args, path_arg);
+		}
 		 _free(args, path_arg);
 	}
 	return (0);

@@ -20,11 +20,11 @@ extern char **environ;
 typedef struct shell_bin
 {
 	char *name;
-	int (*f)(void);
+	void (*f)(char **);
 } builtin;
-int env_function(void);
-int exit_function(void);
-int (*built_in(char *command))(void);
+void env_function(char **);
+void exit_function(char **);
+void (*built_in(char **args))(char **args);
 char *_getline(void);
 char *_strtok(char *str, const char *delim);
 
