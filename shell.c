@@ -8,13 +8,14 @@
  */
 int main(int ac __attribute__((unused)), char **av)
 {
-	int tty = 1;
+	int tty = 1, line_no = 0;
 	char **args, *buffer, *path_arg;
 	pid_t child_id;
 	builtin func;
 
 	while (tty)
 	{
+		line_no++;
 		tty = isatty(STDIN_FILENO);
 		if (tty)
 			prompt();
@@ -27,16 +28,14 @@ int main(int ac __attribute__((unused)), char **av)
 		func.f = built_in(args);
 		if (func.f != NULL/* && args[1] == NULL*/)
 		{
-			/*free(args);*/
 			func.f(args);
 			continue;
 		}
 		path_arg = path(args[0]);
 		if (path_arg == NULL)
 		{
-			/*_free(args, path_arg);*/
-			execve(args[0], args, environ);
-			excve_error(av[0], args, path_arg);
+			print_error(av[0], args, line_no);
+			free(args);
 			continue;
 		}
 		child_id = fork();
@@ -50,14 +49,13 @@ int main(int ac __attribute__((unused)), char **av)
 }
 
 /**
- * excve_error - handles execution errors
+ * print_error - handles execution errors
  * @name: program name
  * @args: pointer of arguments
- * @path_arg: path file command
+ * @line_no: line being executed
  * Return: Always 1
  */
-void excve_error(char *name, char **args, char *path_arg)
+void print_error(char *name, char **args, int line_no)
 {
-	perror(name);
-	_free(args, path_arg);
+	dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", name, line_no, args[0]);
 }

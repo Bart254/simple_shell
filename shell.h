@@ -9,7 +9,7 @@ void prompt(void);
 char **get_args(char *buffer);
 void _free(char **args, char *path_arg);
 char *path(char *arg);
-void excve_error(char *name, char **args, char *);
+void print_error(char *name, char **args, int line_no);
 extern char **environ;
 
 /**
