@@ -34,7 +34,9 @@ int main(int ac __attribute__((unused)), char **av)
 		path_arg = path(args[0]);
 		if (path_arg == NULL)
 		{
-			print_error(av[0], args, line_no);
+			/*print_error(av[0], args, line_no);*/
+			access(args[0], X_OK);
+			perror(av[0]);
 			free(args);
 			continue;
 		}
