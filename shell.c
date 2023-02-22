@@ -34,17 +34,16 @@ int main(int ac __attribute__((unused)), char **av)
 		path_arg = path(args[0]);
 		if (path_arg == NULL)
 		{
-			_free(args, path_arg);
+			/*_free(args, path_arg);*/
+			execve(args[0], args, environ);
+			excve_error(av[0], args, path_arg);
 			continue;
 		}
 		child_id = fork();
 		if (child_id)
 			wait(NULL);
 		else
-		{
 			execve(path_arg, args, environ);
-			excve_error(av[0], args, path_arg);
-		}
 		 _free(args, path_arg);
 	}
 	return (0);
