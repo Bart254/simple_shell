@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <string.h>
 
 /**
  * main - creates a shell program
@@ -35,7 +36,6 @@ int main(int ac __attribute__((unused)), char **av)
 		if (path_arg == NULL)
 		{
 			print_error(av[0], args, line_no);
-			free(args);
 			continue;
 		}
 		child_id = fork();
@@ -57,5 +57,22 @@ int main(int ac __attribute__((unused)), char **av)
  */
 void print_error(char *name, char **args, int line_no)
 {
-	dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", name, line_no, args[0]);
+	int terminal;
+
+	terminal = isatty(STDIN_FILENO);
+	if (strcmp(args[0], "exit") == 0)
+	{
+		dprintf(STDERR_FILENO, "%s: %d: %s: Illegal number: %s\n",
+				name, line_no, args[0], args[1]);
+		free(args);
+		if (terminal == 0)
+			exit(2);
+	}
+	else
+	{
+		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", name, line_no, args[0]);
+		free(args);
+		if (terminal == 0)
+			exit(127);
+	}
 }

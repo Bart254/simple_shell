@@ -12,14 +12,14 @@ char **get_args(char *buffer)
 	char *token, *args[50], **commands;
 	int e, size;
 
-	token = _strtok(buffer, " \n");
+	token = _strtok(buffer, " \t\n");
 	if (!token)
 		return (NULL);
 	for (e = 0, size = 0; e < 50 && token; e++)
 	{
 		args[e] = token;
 		size++;
-		token = _strtok(NULL, " \n");
+		token = _strtok(NULL, " \t\n");
 	}
 	commands = malloc((size + 1) * sizeof(char *));
 	if (commands == NULL)

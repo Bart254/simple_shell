@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <errno.h>
 void prompt(void);
 char **get_args(char *buffer);
 void _free(char **args, char *path_arg);

@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <string.h>
+#include <errno.h>
 
 /**
  * exit_function - exits from the program
@@ -11,6 +12,8 @@ void exit_function(char **args)
 
 	if (args[1])
 		exit_code = atoi(args[1]);
+	else if (errno && isatty(STDIN_FILENO) == 0)
+		exit_code = 2;
 	else
 		exit_code = 0;
 	free(args);
@@ -40,7 +43,7 @@ void env_function(char **args)
  */
 void (*built_in(char **args))(char **)
 {
-	int e = 0, code;
+	int e = 0, code, i;
 	builtin arr[] = {{"exit", exit_function}, {"env", env_function},
 			 {NULL, NULL}};
 	char *str;
@@ -52,10 +55,15 @@ void (*built_in(char **args))(char **)
 			if (e == 0 && args[1] != NULL)
 			{
 				str = args[1];
+				i = strlen(str) - 1;
 				code = atoi(str);
-				if ((code == 0 && str[0] != '0') ||
-						(code == 0 && strlen(str) != 1) || (args[2] != NULL))
-					return (NULL);
+				while (i)
+				{
+					if (str[i] != code % 10)
+						return (NULL);
+					i--;
+					code /= 10;
+				}
 			}
 			else if (e == 1 && args[1] != NULL)
 				return (NULL);
