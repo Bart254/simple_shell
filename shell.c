@@ -13,7 +13,7 @@ int main(int ac __attribute__((unused)), char **av)
 	pid_t child_id;
 	builtin func;
 
-	while (tty)
+	while (1)
 	{
 		line_no++;
 		tty = isatty(STDIN_FILENO);
@@ -26,7 +26,7 @@ int main(int ac __attribute__((unused)), char **av)
 		if (!args)
 			continue;
 		func.f = built_in(args);
-		if (func.f != NULL/* && args[1] == NULL*/)
+		if (func.f != NULL)
 		{
 			func.f(args);
 			continue;
@@ -34,9 +34,7 @@ int main(int ac __attribute__((unused)), char **av)
 		path_arg = path(args[0]);
 		if (path_arg == NULL)
 		{
-			/*print_error(av[0], args, line_no);*/
-			access(args[0], X_OK);
-			perror(av[0]);
+			print_error(av[0], args, line_no);
 			free(args);
 			continue;
 		}
