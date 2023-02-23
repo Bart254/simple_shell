@@ -59,7 +59,7 @@ void (*built_in(char **args))(char **)
 				code = atoi(str);
 				while (i)
 				{
-					if (str[i] != code % 10)
+					if (str[i] != (code % 10 + '0'))
 						return (NULL);
 					i--;
 					code /= 10;
