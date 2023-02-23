@@ -7,14 +7,14 @@
  */
 char *_getline(void)
 {
-	static char buffer[2000];
+	static char buffer[200000];
 	char c;
 	int check, e = 0;
 
 	check = read(STDIN_FILENO, &c, 1);
 	if (check <= 0)
 		return (NULL);
-	while (e < 2000 && check != 0)
+	while (e < 200000 && check != 0)
 	{
 		buffer[e] = c;
 		if (c == '\n')
@@ -22,7 +22,6 @@ char *_getline(void)
 		check = read(STDIN_FILENO, &c, 1);
 		e++;
 	}
-
 	buffer[e] = '\0';
 	return (buffer);
 }
