@@ -20,6 +20,8 @@ int main(int ac __attribute__((unused)), char **av)
 		tty = isatty(STDIN_FILENO);
 		if (tty)
 			prompt();
+		if (tty == 0 && line_no == 1)
+			errno = 0;
 		buffer = _getline();
 		if (!buffer)
 			break;
