@@ -17,7 +17,7 @@ char *_getline(void)
 	while (e < 200000 && check != 0)
 	{
 		buffer[e] = c;
-		if (c == '\n')
+		if (c == '\n' || c == ';')
 			break;
 		check = read(STDIN_FILENO, &c, 1);
 		e++;

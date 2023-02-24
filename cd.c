@@ -23,6 +23,8 @@ void cd(char **args, int status __attribute__((unused)))
 	else if (strcmp(args[1], "-") == 0)
 	{
 		new_d = getenv("OLDPWD");
+		if (new_d == NULL)
+			new_d = getenv("PWD");
 		printf("%s\n", new_d);
 	}
 	else
