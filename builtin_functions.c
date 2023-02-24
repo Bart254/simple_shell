@@ -40,7 +40,7 @@ void (*built_in(char **args, int *status))(char **, int)
 {
 	int e = 0, code, i;
 	builtin arr[] = {{"exit", exit_function}, {"env", env_function},
-			 {NULL, NULL}};
+		{"setenv", setenv_f}, {"unsetenv", unsetenv_f}, { NULL, NULL}};
 	char *str;
 
 	while (arr[e].name != NULL)
@@ -64,7 +64,7 @@ void (*built_in(char **args, int *status))(char **, int)
 			}
 			else if (e == 1 && args[1] != NULL)
 				return (NULL);
-			if (e == 1)
+			if (e != 0)
 				*status = 0;
 			return (arr[e].f);
 		}

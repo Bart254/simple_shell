@@ -17,7 +17,10 @@ char *path(char *args)
 	if (stat(args, &buffer) == 0)
 		return (strdup(args));
 	cwd = getcwd(cwd, a);
-	path = strdup(getenv("PATH"));
+	path = getenv("PATH");
+	if (path == NULL)
+		return (NULL);
+	path = strdup(path);
 	dir = _strtok(path, ":\n");
 	while (dir != NULL)
 	{
