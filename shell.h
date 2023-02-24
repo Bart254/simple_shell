@@ -28,6 +28,7 @@ void env_function(char **args, int status);
 void exit_function(char **args, int status);
 void setenv_f(char **args, int status);
 void unsetenv_f(char **args, int status);
+void cd(char **args, int status);
 void (*built_in(char **args, int *status))(char **args, int status);
 char *_getline(void);
 char *_strtok(char *str, const char *delim);

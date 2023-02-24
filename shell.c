@@ -82,6 +82,13 @@ void print_error(char *name, char **args, int line_no, int *status)
 		*status = 2;
 		free(args);
 	}
+	else if (strcmp(args[0], "cd") == 0)
+	{
+		dprintf(STDERR_FILENO, "%s: %d: %s: can't cd to %s\n",
+				name, line_no, args[0], args[1]);
+		*status = 2;
+		free(args);
+	}
 	else
 	{
 		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", name, line_no, args[0]);

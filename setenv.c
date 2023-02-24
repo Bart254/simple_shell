@@ -9,7 +9,14 @@
 void setenv_f(char **args, int status __attribute__((unused)))
 {
 	if (args[1] == NULL || args[2] == NULL)
+	{
+		free(args);
 		return;
+	}
 	if (setenv(args[1], args[2], 1) == -1)
+	{
 		perror(args[0]);
+		free(args);
+	}
+	free(args);
 }

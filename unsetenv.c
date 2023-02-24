@@ -13,4 +13,5 @@ void unsetenv_f(char **args, int status __attribute__((unused)))
 		return;
 	}
 	unsetenv(args[1]);
+	free(args);
 }
