@@ -18,7 +18,11 @@ void cd(char **args, int status __attribute__((unused)))
 	{
 		new_d = getenv("HOME");
 		if (new_d == NULL)
+		{
+			free(args);
+			setenv("OLDPWD", "/", 1);
 			return;
+		}
 	}
 	else if (strcmp(args[1], "-") == 0)
 	{
