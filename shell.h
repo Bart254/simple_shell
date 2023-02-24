@@ -8,9 +8,10 @@
 #include <errno.h>
 void prompt(void);
 char **get_args(char *buffer);
+void execute(char *path_arg, char **args, int *status);
 void _free(char **args, char *path_arg);
 char *path(char *arg);
-void print_error(char *name, char **args, int line_no);
+void print_error(char *name, char **args, int line_no, int *status);
 extern char **environ;
 
 /**
@@ -21,11 +22,11 @@ extern char **environ;
 typedef struct shell_bin
 {
 	char *name;
-	void (*f)(char **);
+	void (*f)(char **args, int status);
 } builtin;
-void env_function(char **);
-void exit_function(char **);
-void (*built_in(char **args))(char **args);
+void env_function(char **args, int status);
+void exit_function(char **args, int status);
+void (*built_in(char **args, int *status))(char **args, int status);
 char *_getline(void);
 char *_strtok(char *str, const char *delim);
 

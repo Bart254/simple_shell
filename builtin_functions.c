@@ -5,26 +5,20 @@
 /**
  * exit_function - exits from the program
  * @args: commands passed
+ * @status: returned code
  */
-void exit_function(char **args)
+void exit_function(char **args, int status)
 {
-	int exit_code;
-
-	if (args[1])
-		exit_code = atoi(args[1]);
-	else if (errno && isatty(STDIN_FILENO) == 0)
-		exit_code = 2;
-	else
-		exit_code = 0;
 	free(args);
-	exit(exit_code);
+	exit(status);
 }
 
 /**
  * env_function - prints current environment
  * @args: commands passed
+ * @status: exit code
  */
-void env_function(char **args)
+void env_function(char **args, int status __attribute__((unused)))
 {
 	int e;
 
@@ -39,9 +33,10 @@ void env_function(char **args)
 /**
  * built_in - checks for a command that calls a builtin
  * @args: commands passed
+ * @status: code to be  returned
  * Return: function pointer
  */
-void (*built_in(char **args))(char **)
+void (*built_in(char **args, int *status))(char **, int)
 {
 	int e = 0, code, i;
 	builtin arr[] = {{"exit", exit_function}, {"env", env_function},
@@ -64,9 +59,13 @@ void (*built_in(char **args))(char **)
 					i--;
 					code /= 10;
 				}
+				*status = atoi(str);
+				return (arr[0].f);
 			}
 			else if (e == 1 && args[1] != NULL)
 				return (NULL);
+			if (e == 1)
+				*status = 0;
 			return (arr[e].f);
 		}
 		e++;
